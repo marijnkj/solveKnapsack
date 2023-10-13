@@ -1,4 +1,5 @@
 library(stats)
+library(dplyr)
 
 RNGversion(min(as.character(getRversion()),"3.5.3"))
 
@@ -28,7 +29,7 @@ brute_force_knapsack <- function(x, W) {
     
     if (weight <= W & value > max_value) {
       max_value <- value
-      elements <- rownames(x_comb)
+      elements <- as.numeric(rownames(x_comb))
     }
   }
   
@@ -60,4 +61,28 @@ greedy_knapsack <- function(x, W) {
     stop("Check your variables! x must be a data.frame with columns w and v and all positive values, and W must be a scalar value.")
   }
   
+  # Sort in decreasing order of value per unit of weight
+  x <- mutate(x, "vw"=x$v / x$w)
+  x <- x[order(x$vw, decreasing=TRUE),]
+  
+  elements1 <- vector()
+  weight <- 0
+  
+  i <- 1
+  elements_p1 <- vector()
+  repeat {
+    elements_p1 <- append(elements1, rownames(x[i,]))
+    weight <- sum(x[elements_p1, "w"])
+    i <- i + 1
+    
+    if (weight > W) break
+    else elements1 <- elements_p1
+  }
+  
+  elements2 <- rownames(x[length(elements1) + 1,])
+  value1 <- sum(x[elements1, "v"])
+  value2 <- sum(x[elements2, "v"])
+  
+  if (value1 > value2) return(list("value"=value1, "elements"=elements1))
+  else return(list("value"=value2, "elements"=elements2))
 }
