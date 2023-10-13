@@ -1,12 +1,18 @@
 Package: solveKnapsack
 Type: Package
-Title: What the package does (short line)
+Encoding: UTF-8
+Title: Solve the knapsack problems using three algorithms
 Version: 1.0
 Date: 2023-10-13
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: c(person("Max", "Björklund", email="maxbj107@student.liu.se", role="aut"),
+             person("Marijn", "Jaarsma", email="marja987@student.liu.se", role=c("aut", "cre")))
+Description: This package provides three different ways of solving the knapsack problem. The first is the brute force method, which check all possible combinations of items in the knapsack and finds the one that maximizes the value. The second method aims to do so dynamically. Lastly, the greedy algorithm aims to find the solution through first ordering the items by the value to weight ratio and then packing them one by one until the weight exceeds the limit. If the next item that could not fit is more valuable than what is currently in the bag, this will instead be given as the answer. The greedy algorithm does not always give the right answer, but is much faster than the previous two.
+License: MIT + file LICENSE
+Imports:
+    dplyr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true
