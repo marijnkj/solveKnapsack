@@ -1,5 +1,16 @@
+#' Find a solution to the knapsack problem through dynamically programming the brute force algorithm
+#' 
+#' @name dynamic_knapsack
+#' @docType methods
+#'
+#' @param x A data.frame containing rows for items to be packed with columns 'w' for weight and 'v' for value
+#' @param W The maximum weight of the knapsack
+#' 
+#' @returns A list containing the maximum value of the knapsack and a vector of elements contained in the knapsack
+#' @export
+
 dynamic_knapsack <- function(x, W) {
-  if (!is.data.frame(x) | !all(c("w", "v") %in% colnames(x)) | length(x[x < 0]) != 0 | !is.numeric(W) | length(W) != 1) {
+  if (!is.data.frame(x) | !all(c("w", "v") %in% colnames(x)) | length(x[x < 0]) != 0 | !is.numeric(W) | W < 0 | length(W) != 1) {
     stop("Check your variables! x must be a data.frame with columns w and v and all positive values, and W must be a scalar value.")
   }
   
@@ -13,7 +24,7 @@ dynamic_knapsack <- function(x, W) {
     }
     
     if (mat[i, w + 1] == -1) { # m[i - 1, w] has not been calculated, must first do this
-      mat <- m(mat, x, i - 1, w)
+      mat <- get_value_mat(mat, x, i - 1, w)
     }
     
     if (x[i, "w"] > w) { # item doesn't fit in the bag
@@ -22,7 +33,7 @@ dynamic_knapsack <- function(x, W) {
     
     else {
       if (mat[i, w + 1 - x[i, "w"]] == -1) { # m[i - 1, w - x[i, "w"]] has not been calculated, must first do this
-        mat <- m(mat, x, i - 1, w - x[i, "w"])
+        mat <- get_value_mat(mat, x, i - 1, w - x[i, "w"])
       }
       
       mat[i + 1, w + 1] <- max(mat[i, w + 1], mat[i, w + 1 - x[i, "w"]] + x[i, "v"])
@@ -35,17 +46,17 @@ dynamic_knapsack <- function(x, W) {
     if (i == 0) {
       return(v_knapsack)
     }
-    if (max(m(mat, x, i, w)) > max(m(mat, x, i - 1, w))) {
-      v_knapsack <- append(i, knapsack(mat, x, v_knapsack, i - 1, w - x[i, "w"]))
+    if (max(get_value_mat(mat, x, i, w)) > max(get_value_mat(mat, x, i - 1, w))) {
+      v_knapsack <- append(i, get_elements_knapsack(mat, x, v_knapsack, i - 1, w - x[i, "w"]))
       return(v_knapsack)
     }
     else {
-      return(knapsack(mat, x, v_knapsack, i - 1, w))
+      return(get_elements_knapsack(mat, x, v_knapsack, i - 1, w))
     }
   }
   
   ### Get values ###
-  mat <- matrix(-1, nrow=nrow(x) + 1, ncol=w + 1) # Initialize nW matrix with -1 values
+  mat <- matrix(-1, nrow=nrow(x) + 1, ncol=W + 1) # Initialize nW matrix with -1 values
   max_value <- max(get_value_mat(mat, x, nrow(x), W))
   elements <- get_elements_knapsack(mat, x, vector(), nrow(x), W)
   return(list("value"=max_value, "elements"=elements))

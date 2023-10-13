@@ -1,5 +1,16 @@
+#' Find a solution to the knapsack problem with the greedy packing algorithm
+#' 
+#' @name greedy_knapsack
+#' @docType methods
+#' 
+#' @param x A data.frame containing rows for items to be packed with columns 'w' for weight and 'v' for value
+#' @param W The maximum weight of the knapsack
+#' 
+#' @returns A list containing the maximum value of the knapsack and a vector of elements contained in the knapsack
+#' @export
+
 greedy_knapsack <- function(x, W) {
-  if (!is.data.frame(x) | !all(c("w", "v") %in% colnames(x)) | length(x[x < 0]) != 0 | !is.numeric(W) | length(W) != 1) {
+  if (!is.data.frame(x) | !all(c("w", "v") %in% colnames(x)) | length(x[x < 0]) != 0 | !is.numeric(W) | W < 0 | length(W) != 1) {
     stop("Check your variables! x must be a data.frame with columns w and v and all positive values, and W must be a scalar value.")
   }
   
@@ -25,6 +36,6 @@ greedy_knapsack <- function(x, W) {
   value1 <- sum(x[elements1, "v"])
   value2 <- sum(x[elements2, "v"])
   
-  if (value1 > value2) return(list("value"=value1, "elements"=elements1))
-  else return(list("value"=value2, "elements"=elements2))
+  if (value1 > value2) return(list("value"=value1, "elements"=as.numeric(elements1)))
+  else return(list("value"=value2, "elements"=as.numeric(elements2)))
 }

@@ -1,0 +1,58 @@
+---
+title: "solveKnapsack"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{solveKnapsack}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(solveKnapsack)
+```
+
+# Knapsack Problem
+> The knapsack problem...
+
+## Algorithms
+### Brute force
+> The most basic, and least efficient, algorithm is the brute force algorithm. This approach will check all 2^n possible combinations of items in the knapsack and record the solution with the highest total value.
+
+```{r}
+brute_force_knapsack(x = knapsack_objects[1:8,], W = 3500)
+
+brute_force_knapsack(x = knapsack_objects[1:12,], W = 3500)
+
+brute_force_knapsack(x = knapsack_objects[1:8,], W = 2000)
+
+brute_force_knapsack(x = knapsack_objects[1:12,], W = 2000)
+```
+
+### Dynamic programming
+> The dynamic programming approach will start by trying to pack the maximum number of items in the knapsack, and recursively calculate only the necessary values to obtain the maximum achievable value given the maximum weight.
+
+```{r} 
+dynamic_knapsack(x = knapsack_objects[1:8,], W = 3500)
+
+dynamic_knapsack(x = knapsack_objects[1:12,], W = 3500)
+
+dynamic_knapsack(x = knapsack_objects[1:8,], W = 2000)
+
+dynamic_knapsack(x = knapsack_objects[1:12,], W = 2000)
+```
+
+### Greedy heuristic
+> The greedy algorithm may not give the exact result, but rather give an approximation. Using this algorithm will be much faster than the previous as it reduces computational complexity greatly.
+
+```{r} 
+greedy_knapsack(x = knapsack_objects[1:800,], W = 3500)
+
+greedy_knapsack(x = knapsack_objects[1:1200,], W = 2000)
+```
