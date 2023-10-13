@@ -1,0 +1,4 @@
+export("knapsack_brute_force",
+       "knapsack_dynamic",
+       "knapsack_greedy",
+       "knapsack_objects", "n")
