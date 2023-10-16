@@ -5,12 +5,16 @@
 \alias{brute_force_knapsack}
 \title{Find a solution to the knapsack problem with the brute force algorithm}
 \usage{
-brute_force_knapsack(x, W)
+brute_force_knapsack(x, W, parallel = FALSE, cores = 2)
 }
 \arguments{
 \item{x}{A data.frame containing rows for items to be packed with columns 'w' for weight and 'v' for value}
 
 \item{W}{The maximum weight of the knapsack}
+
+\item{parallel}{Whether the algorithm should be run over multiple cores}
+
+\item{cores}{If parallel == TRUE, chose how many computing cores should be used.}
 }
 \value{
 A list containing the maximum value of the knapsack and a vector of elements contained in the knapsack
